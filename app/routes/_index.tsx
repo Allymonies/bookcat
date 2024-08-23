@@ -1,48 +1,83 @@
-import type { MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { listPagesByTag } from "~/.server/controller/page";
+import { listFeaturedTags } from "~/.server/controller/tags";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Test app" },
+    { name: "description", content: "Testing" },
   ];
 };
 
+export const links: MetaFunction = () => {
+  return [
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/bc_icon1s.png",
+    },
+  ];
+};
+
+export async function loader() {
+  const oneshotPages = await listPagesByTag("one-shot", 100, 0);
+  const featuredTags = await listFeaturedTags(50, 0);
+
+  return json({ oneshotPages, featuredTags });
+}
+
 export default function Index() {
+  const data = useLoaderData<typeof loader>();
+  const oneshotPages = data.oneshotPages;
+  const featuredTags = data.featuredTags;
   return (
-    <div className="font-sans p-4">
-      <h1 className="text-3xl">Welcome to Remix</h1>
-      <ul className="list-disc mt-4 pl-6 space-y-2">
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/docs"
-            rel="noreferrer"
-          >
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div className="font-sans p-4 max-w-2xl mx-auto">
+      <h1 className="text-3xl">ally&apos;s writing</h1>
+      <hr className="my-4 text-white"/>
+      <div className="my-4">
+        <h2 className="text-2xl">links</h2>
+        <ul className="list-disc mt-4 pl-6 space-y-2">
+          <li>
+            <Link
+              className="text-blue-600 hover:text-blue-500 visited:text-purple-600 hover:visited:text-purple-500 dark:text-blue-600 dark:hover:text-blue-700 dark:visited:text-purple-500 dark:hover:visited:text-purple-600"
+              to="/about"
+            >
+              about me :3
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="my-4">
+        <h2 className="text-2xl">one shots</h2>
+        <ul className="list-disc mt-4 pl-6 space-y-2">
+          {oneshotPages.map((page) => (
+            <li key={page.identifier}>
+              <Link
+                className="text-blue-600 hover:text-blue-500 visited:text-purple-600 hover:visited:text-purple-500 dark:text-blue-600 dark:hover:text-blue-700 dark:visited:text-purple-500 dark:hover:visited:text-purple-600"
+                to={`/pages/${page.identifier}`}
+              >
+                {page.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="my-4">
+        <h2 className="text-2xl">chapter fics</h2>
+        <ul className="list-disc mt-4 pl-6 space-y-2">
+          {featuredTags.map((tag) => (
+            <li key={tag.tag}>
+              <Link
+                className="text-blue-600 hover:text-blue-500 visited:text-purple-600 hover:visited:text-purple-500 dark:text-blue-600 dark:hover:text-blue-700 dark:visited:text-purple-500 dark:hover:visited:text-purple-600"
+                to={`/series/${tag.tag}`}
+              >
+                {tag.tag.replaceAll("-", " ")}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

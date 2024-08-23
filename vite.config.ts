@@ -13,4 +13,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  esbuild: {
+    supported: {
+      'top-level-await': true
+    },
+  },
 });

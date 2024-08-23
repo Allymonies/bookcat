@@ -1,0 +1,59 @@
+import { marked, TokensList } from "marked";
+import { alertTokenizer, startAlertToken } from "~/components/markdown/marked/alertExtension";
+import { blockIdentifierTokenizer, startBlockIdentifierToken } from "~/components/markdown/marked/blockIdentifierExtension";
+import { commentTokenizer, startCommentToken } from "~/components/markdown/marked/commentExtension";
+import { footnoteTokenizer, startFootnoteToken } from "~/components/markdown/marked/footnoteExtension";
+import { footnoteReferenceTokenizer, startFootnoteReferenceToken } from "~/components/markdown/marked/footnoteReferenceExtension";
+import { highlightTokenizer, startHighlightToken } from "~/components/markdown/marked/highlightExtension";
+import { inlineFootnoteTokenizer, startInlineFootnoteToken } from "~/components/markdown/marked/inlineFootnoteExtension";
+import { latexTokenizer, startLatexToken } from "~/components/markdown/marked/latexExtension";
+import { rubyTokenizer, startRubyToken } from "~/components/markdown/marked/rubyExtension";
+import { rubyTextTokenizer, startRubyTextToken } from "~/components/markdown/marked/rubyTextExtension";
+import { tagTokenizer, startTagToken } from "~/components/markdown/marked/tagExtension";
+import { wikiLinkTokenizer, startWikiLinkToken } from "~/components/markdown/marked/wikiLinkExtension";
+
+export function parseMarkdown(content: string): TokensList {
+    return marked
+        .lexer(
+        content,
+        {
+            extensions: {
+            renderers: {},
+            childTokens: {},
+            inline: [
+                latexTokenizer,
+                highlightTokenizer,
+                commentTokenizer,
+                tagTokenizer,
+                blockIdentifierTokenizer,
+                wikiLinkTokenizer,
+                rubyTokenizer,
+                rubyTextTokenizer,
+                footnoteTokenizer,
+                footnoteReferenceTokenizer,
+                inlineFootnoteTokenizer,
+            ],
+            startInline: [
+                startLatexToken,
+                startHighlightToken,
+                startCommentToken,
+                startTagToken,
+                startBlockIdentifierToken,
+                startWikiLinkToken,
+                startRubyToken,
+                startRubyTextToken,
+                startFootnoteToken,
+                startFootnoteReferenceToken,
+                startInlineFootnoteToken,
+            ],
+            block: [
+                alertTokenizer
+            ],
+            startBlock: [
+                startAlertToken
+            ],
+            },
+            gfm: true
+        }
+        );
+}

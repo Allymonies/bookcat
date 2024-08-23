@@ -11,6 +11,7 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import { createUser, getUserByUserName } from "./.server/controller/user";
 
 const ABORT_DELAY = 5_000;
 
@@ -137,4 +138,23 @@ function handleBrowserRequest(
 
     setTimeout(abort, ABORT_DELAY);
   });
+}
+
+
+const gt = globalThis as typeof globalThis & {ran: boolean};
+if (!gt.ran) {
+  gt.ran = true;
+  // TODO: Ensure this only runs once
+  if (process.env.BOOKCAT_USER_USERNAME && process.env.BOOKCAT_USER_PASSWORD) {
+    const user = await getUserByUserName(process.env.BOOKCAT_USER_USERNAME);
+    if (!user) {
+        console.warn("User specified in environment does not exist, creating user");
+        const createdUser = await createUser(
+            process.env.BOOKCAT_USER_USERNAME,
+            process.env.BOOKCAT_USER_EMAIL ?? "",
+            process.env.BOOKCAT_USER_PASSWORD
+        )
+        console.log(`Created user: ${createdUser.username} id ${createdUser.uuid}`);
+    }
+  }
 }

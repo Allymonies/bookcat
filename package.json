@@ -8,15 +8,36 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
     "@remix-run/serve": "^2.11.2",
+    "@types/js-cookie": "^3.0.6",
+    "@types/katex": "^0.16.7",
+    "@types/mermaid": "^9.2.0",
+    "@types/pg": "^8.11.6",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/uuid": "^10.0.0",
+    "argon2": "^0.40.3",
+    "cookie": "^0.6.0",
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.24.0",
+    "drizzle-orm": "^0.33.0",
+    "highlight.js": "^11.10.0",
     "isbot": "^4.1.0",
+    "js-cookie": "^3.0.5",
+    "katex": "^0.16.11",
+    "lucide-react": "^0.428.0",
+    "marked": "^14.0.0",
+    "mermaid": "^10.9.1",
+    "pg": "^8.12.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.11.2",

@@ -1,0 +1,10 @@
+services:
+  bookcat_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${BOOKCAT_DB_PASSWORD} 
+      POSTGRES_DB: bookcat
+      POSTGRES_USER: bookcat
+    ports:
+      - 5432:5432
