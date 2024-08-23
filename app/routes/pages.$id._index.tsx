@@ -11,8 +11,8 @@ import { User } from "~/model/user";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: data?.page.title ?? "page not found" },
-    { name: "description", content: data?.page.title ?? "page not found" },
+    { title: data?.page.title ? `${data.page.title} | ally cat` : "page not found" },
+    { name: "description", content: data?.page.title ? `read ${data.page.title} on ally cat :3` : "page not found" },
   ];
 };
 

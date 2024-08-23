@@ -5,8 +5,8 @@ import { listFeaturedTags } from "~/.server/controller/tags";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Test app" },
-    { name: "description", content: "Testing" },
+    { title: "creative ally cat :3" },
+    { name: "description", content: "writing site for ally :)" },
   ];
 };
 
