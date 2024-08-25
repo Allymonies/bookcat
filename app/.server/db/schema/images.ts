@@ -6,5 +6,9 @@ export const images = pgTable("images", {
     author: integer("author").notNull().references(() => users.id),
     mimeType: varchar("mimeType").notNull(),
     filename: varchar("filename").notNull(),
+    path: varchar("path").notNull(),
     created: timestamp("created").defaultNow().notNull(),
 });
+
+export type DbImage = typeof images.$inferSelect;
+export type DbNewImage = typeof images.$inferInsert;

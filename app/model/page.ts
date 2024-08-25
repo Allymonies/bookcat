@@ -9,3 +9,11 @@ export interface Page {
     content: string;
     published: boolean;
 }
+
+export interface PageSummary {
+    identifier: string;
+    title: string;
+    created: Date;
+    updated: Date;
+    published: boolean;
+}

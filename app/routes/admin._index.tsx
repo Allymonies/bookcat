@@ -53,6 +53,16 @@ export default function AdminPage() {
               Featured tags<ChevronRight className="inline align-middle"/>
             </Link>
         </div>
+        <div className="my-2">
+            <Link to="/admin/image-list" className="h-full align-center text-black dark:text-white hover:text-gray-600 hover:dark:text-gray-300">
+              List images<ChevronRight className="inline align-middle"/>
+            </Link>
+        </div>
+        <div className="my-2">
+            <Link to="/admin/upload-image" className="h-full align-center text-black dark:text-white hover:text-gray-600 hover:dark:text-gray-300">
+              Upload image<ChevronRight className="inline align-middle"/>
+            </Link>
+        </div>
       </div> 
     </div>
   );

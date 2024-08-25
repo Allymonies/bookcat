@@ -49,7 +49,7 @@ export default function PageListingPage() {
         <h1 className="text-3xl">Page list</h1>
         <Link to="/admin/create-page" className="ml-auto align-middle h-full align-center text-black dark:text-white hover:text-gray-600 hover:dark:text-gray-300">
           Create new page
-        </Link>  
+        </Link>
       </div>
       <table className="w-full">
         <thead>

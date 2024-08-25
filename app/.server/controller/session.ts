@@ -1,5 +1,5 @@
-import * as argon2 from "argon2";
-import * as crypto from "crypto";
+import argon2 from "argon2";
+import  crypto from "crypto";
 import { DbSession, sessions } from "../db/schema/sessions";
 import { getDbUserByIdentifier } from "./user";
 import { db } from "../db/db";
