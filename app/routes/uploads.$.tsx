@@ -1,9 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { db } from "~/.server/db/db";
-import { images } from "~/.server/db/schema/images";
-import { eq } from "drizzle-orm";
-import path from "path";
 import fs from "fs/promises";
+import { getImage } from "~/.server/controller/image";
 
 export async function loader({ params }: LoaderFunctionArgs) {
     const filename = params["*"];
@@ -11,27 +8,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
         throw new Response("Not Found", { status: 404 });
     }
 
-    
-    // Query the database for the image
-    const [image] = await db
-        .select()
-        .from(images)
-        .where(eq(images.filename, filename))
-        .limit(1);
+    // Get image
+    const image = await getImage(filename);
 
     if (!image) {
         throw new Response("Image not found", { status: 404 });
     }
 
     try {
-        // Construct the file path
-        const filePath = path.join(process.cwd(), "uploads", image.filename);
-
         // Check if the file exists
-        await fs.access(filePath);
+        await fs.access(image.path);
 
         // Read the file
-        const fileBuffer = await fs.readFile(filePath);
+        const fileBuffer = await fs.readFile(image.path);
 
         // Set appropriate headers
         const headers = new Headers();

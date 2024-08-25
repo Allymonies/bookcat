@@ -20,7 +20,8 @@ export async function uploadImage(file: Buffer, authorId: number, filename: stri
     const uniqueFilename = `${uuidv4()}${path.extname(filename)}`;
 
     // Define the upload directory
-    const uploadDir = path.join(process.cwd(), 'uploads');
+    const baseDir = process.env.BOOKCAT_DATA_DIR ?? process.cwd();
+    const uploadDir = path.join(baseDir, 'uploads');
 
     try {
         await stat(uploadDir);
@@ -99,5 +100,24 @@ export async function deleteImage(filename: string): Promise<boolean> {
     } catch (error) {
         console.error('Error deleting image:', error);
         throw new Error('Failed to delete image');
+    }
+}
+
+export async function getImage(filename: string) {
+    try {
+        const [image] = await db
+            .select()
+            .from(images)
+            .where(eq(images.filename, filename))
+            .limit(1);
+
+        if (!image) {
+            return undefined;
+        }
+
+        return image;
+    } catch (error) {
+        console.error('Error fetching image:', error);
+        throw new Error('Failed to fetch image');
     }
 }
