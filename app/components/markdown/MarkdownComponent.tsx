@@ -102,7 +102,13 @@ export function MarkdownComponent({ token, footnotes }: MarkdownComponentProps):
         const escapeToken = token as Tokens.Escape;
         return escapeToken.text;
     } else if (token.type === "text" || token.type === "html") {
-        // TODO: Support newlines
+        if (token.raw.includes("\n")) {
+            return (
+                <span>
+                    {token.raw.replace(/^\n+|\n+$/g, '').split("\n").map((line, i) => [line, (<br key={i}/>)].flat())}     
+                </span>
+            );
+        }
         return token.raw;
     } else if (token.type === "space" || token.type === "comment" || token.type === "footnote") {
         return null;
