@@ -2,7 +2,6 @@ import { MarkdownComponent } from "./MarkdownComponent";
 import { FootnoteInfo } from "~/util/parseFootnotes";
 import { AlertToken } from "./marked/alertExtension";
 import { BugIcon, CheckIcon, ChevronRightIcon, CircleCheckIcon, CircleHelpIcon, ClipboardListIcon, FlameIcon, InfoIcon, ListIcon, PencilIcon, QuoteIcon, TriangleAlertIcon, XIcon, ZapIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export type AlertProps = {
     token: AlertToken;
@@ -11,7 +10,7 @@ export type AlertProps = {
   
 export function Alert({ token, footnotes }: AlertProps): JSX.Element {
     const isAccordion = !!token.alertState;
-    const [accordionOpen, setAccordionOpen] = useState<boolean>(typeof document === "undefined" || !isAccordion || token.alertState === "+");
+    const defaultOpen = !isAccordion || token.alertState === "+";
 
     let backgroundColor = "bg-blue-100 dark:bg-blue-900";
     let foregroundColor = "text-blue-700 dark:text-blue-200";
@@ -100,36 +99,38 @@ export function Alert({ token, footnotes }: AlertProps): JSX.Element {
     }
 
     const title = (
-        <div className={`${foregroundColor} font-bold`}>
+        <div className="inline">
             {icon}
             <span className="align-middle">
                 {token.title.map((token, i) => <MarkdownComponent key={i} token={token} footnotes={footnotes} />)}
             </span>
-            { isAccordion
-                ? <ChevronRightIcon className={`inline ml-2 duration-200 ${accordionOpen ? "rotate-90" : ""}`} />
-                : undefined
-            }
         </div>
     );
 
-    const accordionButton = (
-        <button className="w-full text-left" onClick={() => setAccordionOpen(!accordionOpen)}>
-            {title}
-        </button>
-    );
+    const content = (
+        <div className="h-fit my-2">
+            {token.tokens.map((token, i) => <MarkdownComponent key={i} token={token} footnotes={footnotes} />)}
+        </div>
+    )
 
-    useEffect(() => {
-        setAccordionOpen(!isAccordion || token.alertState === "+");
-    }, [isAccordion, token.alertState]);
-
-    // TODO: Accordion component
-    // TODO: Accordion transition
-    return (
-        <div className={`rounded-md py-1 px-2 my-2 ${backgroundColor}`}>
-            {isAccordion ? accordionButton : title}
-            <div className={accordionOpen ? "h-fit my-2" : "h-0 hidden"}>
-                {token.tokens.map((token, i) => <MarkdownComponent key={i} token={token} footnotes={footnotes} />)}
+    if (isAccordion) {
+        return (
+            <details className={`rounded-md py-1 px-2 my-2 ${backgroundColor} group`} open={defaultOpen}>
+                <summary className={`${foregroundColor} font-bold list-none`}>
+                    {title}
+                    <ChevronRightIcon className={`inline ml-2 duration-200 group-open:rotate-90`} />
+                </summary>
+                {content}
+            </details>
+        );
+    } else {
+        return (
+            <div className={`rounded-md py-1 px-2 my-2 ${backgroundColor}`}>
+                <div className={`${foregroundColor} font-bold`}>
+                    {title}
+                </div>
+                {content}
             </div>
-        </div>
-    );
+        );
+    }
 }

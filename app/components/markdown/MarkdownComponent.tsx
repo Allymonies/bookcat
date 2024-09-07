@@ -33,6 +33,8 @@ import { InlineFootnoteReference } from "./InlineFootnoteReference";
 import { InlineFootnoteToken } from "./marked/inlineFootnoteExtension";
 import { Alert } from "./Alert";
 import { AlertToken } from "./marked/alertExtension";
+import { Spoiler } from "./Spoiler";
+import { SpoilerToken } from "./marked/spoilerExtension";
 
 export type MarkdownComponentProps = {
     token: Token;
@@ -86,6 +88,8 @@ export function MarkdownComponent({ token, footnotes }: MarkdownComponentProps):
         return <InlineFootnoteReference token={token as InlineFootnoteToken} footnotes={footnotes} />
     } else if (token.type === "alert") {
         return <Alert token={token as AlertToken} footnotes={footnotes} />
+    } else if (token.type === "spoiler") {
+        return <Spoiler token={token as SpoilerToken} footnotes={footnotes} />
     } else if (token.type === "text" || token.type === "html") {
         // TODO: Support newlines
         return token.raw;
