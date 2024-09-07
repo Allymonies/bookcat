@@ -98,6 +98,9 @@ export function MarkdownComponent({ token, footnotes }: MarkdownComponentProps):
         return <Underline token={token as UnderlineToken} footnotes={footnotes} />
     } else if (token.type === "subtext") {
         return <Subtext token={token as SubtextToken} footnotes={footnotes} />
+    } else if (token.type === "escape") {
+        const escapeToken = token as Tokens.Escape;
+        return escapeToken.text;
     } else if (token.type === "text" || token.type === "html") {
         // TODO: Support newlines
         return token.raw;
