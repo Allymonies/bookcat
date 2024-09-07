@@ -35,6 +35,10 @@ import { Alert } from "./Alert";
 import { AlertToken } from "./marked/alertExtension";
 import { Spoiler } from "./Spoiler";
 import { SpoilerToken } from "./marked/spoilerExtension";
+import { Underline } from "./Underline";
+import { UnderlineToken } from "./marked/underlineExtension";
+import { Subtext } from "./Subtext";
+import { SubtextToken } from "./marked/subtextExtension";
 
 export type MarkdownComponentProps = {
     token: Token;
@@ -90,6 +94,10 @@ export function MarkdownComponent({ token, footnotes }: MarkdownComponentProps):
         return <Alert token={token as AlertToken} footnotes={footnotes} />
     } else if (token.type === "spoiler") {
         return <Spoiler token={token as SpoilerToken} footnotes={footnotes} />
+    } else if (token.type === "underline") {
+        return <Underline token={token as UnderlineToken} footnotes={footnotes} />
+    } else if (token.type === "subtext") {
+        return <Subtext token={token as SubtextToken} footnotes={footnotes} />
     } else if (token.type === "text" || token.type === "html") {
         // TODO: Support newlines
         return token.raw;

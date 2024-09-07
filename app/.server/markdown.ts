@@ -10,7 +10,9 @@ import { latexTokenizer, startLatexToken } from "~/components/markdown/marked/la
 import { rubyTokenizer, startRubyToken } from "~/components/markdown/marked/rubyExtension";
 import { rubyTextTokenizer, startRubyTextToken } from "~/components/markdown/marked/rubyTextExtension";
 import { spoilerTokenizer, startSpoilerToken } from "~/components/markdown/marked/spoilerExtension";
+import { startSubtextToken, subtextTokenizer } from "~/components/markdown/marked/subtextExtension";
 import { tagTokenizer, startTagToken } from "~/components/markdown/marked/tagExtension";
+import { startUnderlineToken, underlineTokenizer } from "~/components/markdown/marked/underlineExtension";
 import { wikiLinkTokenizer, startWikiLinkToken } from "~/components/markdown/marked/wikiLinkExtension";
 
 export function parseMarkdown(content: string): TokensList {
@@ -34,6 +36,7 @@ export function parseMarkdown(content: string): TokensList {
                 footnoteReferenceTokenizer,
                 inlineFootnoteTokenizer,
                 spoilerTokenizer,
+                underlineTokenizer,
             ],
             startInline: [
                 startLatexToken,
@@ -48,12 +51,15 @@ export function parseMarkdown(content: string): TokensList {
                 startFootnoteReferenceToken,
                 startInlineFootnoteToken,
                 startSpoilerToken,
+                startUnderlineToken,
             ],
             block: [
-                alertTokenizer
+                alertTokenizer,
+                subtextTokenizer,
             ],
             startBlock: [
-                startAlertToken
+                startAlertToken,
+                startSubtextToken,
             ],
             },
             gfm: true
